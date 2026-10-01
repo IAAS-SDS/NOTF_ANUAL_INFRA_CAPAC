@@ -1,0 +1,39 @@
+{
+  "type": "object",
+  "properties": {
+    "ID": { "type": "string" },
+    "Cod_prestador": { "type": "string" },
+    "Institucion": { "type": "string" },
+    "Fecha_Diligenciamiento": { "type": "string" },
+    "Responsable_Diligenciamiento": { "type": "string" },
+    "Correo": { "type": "string" },
+    "PuntosAtencion": { "type": "string" },
+    "PuntosConElementos": { "type": "string" },
+    "IndicadorInfraestructura": { "type": "string" },
+    "Cat1Periodo": { "type": "string" },
+    "Cat1Total": { "type": "string" },
+    "Cat1Capacitados": { "type": "string" },
+    "Cat1Indicador": { "type": "string" },
+    "Cat2Periodo": { "type": "string" },
+    "Cat2Total": { "type": "string" },
+    "Cat2Capacitados": { "type": "string" },
+    "Cat2Indicador": { "type": "string" },
+    "Cat3Periodo": { "type": "string" },
+    "Cat3Total": { "type": "string" },
+    "Cat3Capacitados": { "type": "string" },
+    "Cat3Indicador": { "type": "string" },
+    "Cat4Periodo": { "type": "string" },
+    "Cat4Total": { "type": "string" },
+    "Cat4Capacitados": { "type": "string" },
+    "Cat4Indicador": { "type": "string" },
+    "TotalTrabajadores": { "type": "string" },
+    "TotalCapacitados": { "type": "string" },
+    "IndicadorCapacitacion": { "type": "string" }
+  },
+  "required": [
+    "ID", "Cod_prestador", "Institucion", "Fecha_Diligenciamiento",
+    "Responsable_Diligenciamiento", "Correo", "PuntosAtencion",
+    "PuntosConElementos", "IndicadorInfraestructura",
+    "TotalTrabajadores", "TotalCapacitados", "IndicadorCapacitacion"
+  ]
+}

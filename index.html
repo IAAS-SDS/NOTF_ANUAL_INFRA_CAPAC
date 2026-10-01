@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Notificación anual de higiene de manos">
+  <title>Notificación anual de higiene de manos</title><link rel="stylesheet" href="styles.css">
+</head>
+<body><main class="container"><section class="card">
+  <header><span class="eyebrow">Secretaría Distrital de Salud</span><h1>Notificación anual de higiene de manos</h1><p>Indicadores de infraestructura y capacitación.</p></header>
+  <form id="registro-form">
+    <fieldset><legend>Información general</legend><div class="grid">
+      <label>Código del prestador<input name="Cod_prestador" type="text" maxlength="30" required></label>
+      <label>Institución<input name="Institucion" type="text" maxlength="180" required></label>
+      <label>Fecha de diligenciamiento<input name="Fecha_Diligenciamiento" type="date" required></label>
+      <label>Responsable del diligenciamiento<input name="Responsable_Diligenciamiento" type="text" maxlength="180" required></label>
+      <label>Correo electrónico<input name="Correo" type="email" maxlength="180" required></label>
+    </div></fieldset>
+    <fieldset><legend>Indicador de infraestructura</legend><div class="grid">
+      <label>Número de puntos de atención<input name="PuntosAtencion" type="number" min="0" step="1" required></label>
+      <label>Puntos con elementos básicos<input name="PuntosConElementos" type="number" min="0" step="1" required></label>
+    </div><output id="indicadorInfraestructura" class="indicador">Indicador: 0,00 %</output>
+    <p class="ayuda">Elementos básicos: lavamanos con agua limpia, jabón antiséptico, toallas desechables y/o alcohol gel.</p></fieldset>
+    <fieldset><legend>Indicador de capacitación</legend><div class="tabla-responsive"><table>
+      <thead><tr><th>Categoría</th><th>Periodo de evaluación</th><th>Total de trabajadores</th><th>Trabajadores capacitados</th><th>Indicador</th></tr></thead>
+      <tbody id="categorias"></tbody>
+      <tfoot><tr><th colspan="2">Total año</th><td id="totalTrabajadores">0</td><td id="totalCapacitados">0</td><td id="indicadorCapacitacion">0,00 %</td></tr></tfoot>
+    </table></div></fieldset>
+    <button id="enviar" type="submit">Guardar notificación</button><p id="estado" class="estado" role="status" aria-live="polite"></p>
+  </form>
+</section></main><script src="config.js"></script><script src="script.js"></script></body>
+</html>
