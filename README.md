@@ -12,7 +12,7 @@ El archivo original está en formato `.xls` y contiene formularios con celdas co
 4. Pegue en la fila 1 estos encabezados (separados aquí por `|`):
 
 ```text
-ID | Cod_prestador | Institucion | Fecha_Diligenciamiento | Responsable_Diligenciamiento | Correo | PuntosAtencion | PuntosConElementos | IndicadorInfraestructura | Cat1Periodo | Cat1Total | Cat1Capacitados | Cat1Indicador | Cat2Periodo | Cat2Total | Cat2Capacitados | Cat2Indicador | Cat3Periodo | Cat3Total | Cat3Capacitados | Cat3Indicador | Cat4Periodo | Cat4Total | Cat4Capacitados | Cat4Indicador | TotalTrabajadores | TotalCapacitados | IndicadorCapacitacion
+ID | Cod_prestador | Institucion | Fecha_Diligenciamiento | Responsable_Diligenciamiento | Correo | NivelComplejidad | TipoPrestacion | PuntosAtencion | PuntosConElementos | IndicadorInfraestructura | Cat1Periodo | Cat1Total | Cat1Capacitados | Cat1Indicador | Cat2Periodo | Cat2Total | Cat2Capacitados | Cat2Indicador | Cat3Periodo | Cat3Total | Cat3Capacitados | Cat3Indicador | Cat4Periodo | Cat4Total | Cat4Capacitados | Cat4Indicador | TotalTrabajadores | TotalCapacitados | IndicadorCapacitacion
 ```
 
 5. Seleccione la fila de encabezados y una fila vacía debajo; elija **Insertar > Tabla** y marque **La tabla tiene encabezados**.

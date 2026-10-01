@@ -54,11 +54,48 @@ fieldset { margin: 0 0 28px; padding: 22px; border: 1px solid #d5e6e2; border-ra
 legend { padding: 0 8px; font-size: 1.15rem; font-weight: 800; }
 .indicador { display: block; color: #087f69; font-size: 1.1rem; font-weight: 800; }
 .ayuda { color: #55716b; font-size: .9rem; }
+.campo-ayuda { color: #55716b; font-size: .82rem; font-weight: 400; line-height: 1.4; }
+.infraestructura .grid {
+  align-items: stretch;
+  gap: 28px;
+}
+.infraestructura label {
+  grid-template-rows: minmax(2.8rem, auto) 54px minmax(3.6rem, auto);
+  align-content: start;
+  margin-bottom: 0;
+}
+.infraestructura .campo-titulo {
+  display: flex;
+  align-items: end;
+}
+.infraestructura input {
+  height: 54px;
+}
+.infraestructura .indicador {
+  width: 100%;
+  margin-top: 22px;
+  text-align: center;
+}
+.infraestructura .ayuda {
+  margin-bottom: 0;
+}
 .tabla-responsive { overflow-x: auto; }
-table { width: 100%; min-width: 760px; border-collapse: collapse; }
-th, td { padding: 10px; border: 1px solid #d5e6e2; text-align: left; }
+table { width: 100%; min-width: 620px; border-collapse: collapse; }
+th, td { padding: 10px; border: 1px solid #d5e6e2; text-align: center; vertical-align: middle; }
 thead, tfoot { background: #eef7f5; }
-table input { min-width: 120px; }
+table input { min-width: 120px; text-align: center; }
+.nota-categorias {
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-left: 4px solid #087f69;
+  border-radius: 6px;
+  background: #f3faf8;
+  color: #405f59;
+  font-size: .9rem;
+  line-height: 1.5;
+}
+.nota-categorias ul { margin: 8px 0 0; padding-left: 20px; }
+.nota-categorias li + li { margin-top: 4px; }
 
 input, select, textarea {
   width: 100%;
@@ -98,5 +135,7 @@ button:disabled { opacity: .65; cursor: wait; }
   .container { margin: 16px auto; }
   .card { border-radius: 16px; }
   .grid { grid-template-columns: 1fr; gap: 0; }
+  .infraestructura .grid { gap: 18px; }
+  .infraestructura label { grid-template-rows: auto 54px auto; }
   button { width: 100%; }
 }

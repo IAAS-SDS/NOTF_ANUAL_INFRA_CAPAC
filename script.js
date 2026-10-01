@@ -7,7 +7,6 @@ document.querySelector('[name="Fecha_Diligenciamiento"]').value = new Date().toI
 for (let numero = 1; numero <= 4; numero += 1) {
   categorias.insertAdjacentHTML("beforeend", `<tr>
     <th>Categoría ${numero}</th>
-    <td><input name="Cat${numero}Periodo" aria-label="Periodo categoría ${numero}" placeholder="Ej. enero a marzo" required></td>
     <td><input name="Cat${numero}Total" aria-label="Total categoría ${numero}" type="number" min="0" step="1" value="0" required></td>
     <td><input name="Cat${numero}Capacitados" aria-label="Capacitados categoría ${numero}" type="number" min="0" step="1" value="0" required></td>
     <td><output id="cat${numero}Indicador">0,00 %</output></td></tr>`);
@@ -17,13 +16,28 @@ const porcentaje = (parte, total) => total > 0 ? (parte / total) * 100 : 0;
 const mostrarPorcentaje = valor => `${valor.toLocaleString("es-CO", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} %`;
 
 function recalcular() {
-  const puntos = Number(form.elements.PuntosAtencion.value) || 0;
-  const conElementos = Number(form.elements.PuntosConElementos.value) || 0;
+  const campoPuntos = form.elements.PuntosAtencion;
+  const campoConElementos = form.elements.PuntosConElementos;
+  const puntos = Number(campoPuntos.value) || 0;
+  let conElementos = Number(campoConElementos.value) || 0;
+  campoConElementos.max = String(puntos);
+  if (conElementos > puntos) {
+    conElementos = puntos;
+    campoConElementos.value = String(puntos);
+  }
   document.querySelector("#indicadorInfraestructura").value = `Indicador: ${mostrarPorcentaje(porcentaje(conElementos, puntos))}`;
   let totalTrabajadores = 0, totalCapacitados = 0;
   for (let numero = 1; numero <= 4; numero += 1) {
-    const total = Number(form.elements[`Cat${numero}Total`].value) || 0;
-    const capacitados = Number(form.elements[`Cat${numero}Capacitados`].value) || 0;
+    const campoTotal = form.elements[`Cat${numero}Total`];
+    const campoCapacitados = form.elements[`Cat${numero}Capacitados`];
+    const total = Number(campoTotal.value) || 0;
+    let capacitados = Number(campoCapacitados.value) || 0;
+    campoCapacitados.max = String(total);
+    if (capacitados > total) {
+      capacitados = total;
+      campoCapacitados.value = String(total);
+    }
+    campoCapacitados.setCustomValidity("");
     totalTrabajadores += total; totalCapacitados += capacitados;
     document.querySelector(`#cat${numero}Indicador`).value = mostrarPorcentaje(porcentaje(capacitados, total));
   }

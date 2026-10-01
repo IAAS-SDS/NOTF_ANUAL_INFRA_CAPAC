@@ -14,17 +14,50 @@
       <label>Fecha de diligenciamiento<input name="Fecha_Diligenciamiento" type="date" required></label>
       <label>Responsable del diligenciamiento<input name="Responsable_Diligenciamiento" type="text" maxlength="180" required></label>
       <label>Correo electrónico<input name="Correo" type="email" maxlength="180" required></label>
+      <label>Nivel de complejidad
+        <select name="NivelComplejidad" required>
+          <option value="">Seleccione…</option>
+          <option value="I">I</option>
+          <option value="II">II</option>
+          <option value="III">III</option>
+          <option value="IV">IV</option>
+        </select>
+      </label>
+      <label>Tipo de prestación
+        <select name="TipoPrestacion" required>
+          <option value="">Seleccione…</option>
+          <option value="Ambulatoria">Ambulatoria</option>
+          <option value="Hospitalaria">Hospitalaria</option>
+          <option value="Ambas">Ambas</option>
+        </select>
+      </label>
     </div></fieldset>
-    <fieldset><legend>Indicador de infraestructura</legend><div class="grid">
-      <label>Número de puntos de atención<input name="PuntosAtencion" type="number" min="0" step="1" required></label>
-      <label>Puntos con elementos básicos<input name="PuntosConElementos" type="number" min="0" step="1" required></label>
+    <fieldset class="infraestructura"><legend>Indicador de infraestructura</legend><div class="grid">
+      <label><span class="campo-titulo">Número de puntos de atención</span>
+        <input name="PuntosAtencion" type="number" min="0" step="1" aria-describedby="ayuda-puntos-atencion" required>
+        <span id="ayuda-puntos-atencion" class="campo-ayuda">Ingrese en este campo el número total de puntos de atención de su institución.</span>
+      </label>
+      <label><span class="campo-titulo">Puntos de atención con elementos básicos</span>
+        <input name="PuntosConElementos" type="number" min="0" step="1" aria-describedby="ayuda-puntos-elementos" required>
+        <span id="ayuda-puntos-elementos" class="campo-ayuda">Ingrese en este campo el número de puntos de atención de la institución que cuentan con los elementos básicos para la higiene de manos.</span>
+      </label>
     </div><output id="indicadorInfraestructura" class="indicador">Indicador: 0,00 %</output>
     <p class="ayuda">Elementos básicos: lavamanos con agua limpia, jabón antiséptico, toallas desechables y/o alcohol gel.</p></fieldset>
     <fieldset><legend>Indicador de capacitación</legend><div class="tabla-responsive"><table>
-      <thead><tr><th>Categoría</th><th>Periodo de evaluación</th><th>Total de trabajadores</th><th>Trabajadores capacitados</th><th>Indicador</th></tr></thead>
+      <thead><tr><th>Categoría</th><th>Total de trabajadores</th><th>Trabajadores capacitados</th><th>Indicador</th></tr></thead>
       <tbody id="categorias"></tbody>
-      <tfoot><tr><th colspan="2">Total año</th><td id="totalTrabajadores">0</td><td id="totalCapacitados">0</td><td id="indicadorCapacitacion">0,00 %</td></tr></tfoot>
-    </table></div></fieldset>
+      <tfoot><tr><th>Total año</th><td id="totalTrabajadores">0</td><td id="totalCapacitados">0</td><td id="indicadorCapacitacion">0,00 %</td></tr></tfoot>
+    </table></div>
+      <div class="nota-categorias" aria-label="Descripción de las categorías profesionales">
+        <strong>Clasificación de las categorías:</strong>
+        <ul>
+          <li><strong>Categoría 1:</strong> auxiliares de enfermería.</li>
+          <li><strong>Categoría 2:</strong> profesionales de enfermería.</li>
+          <li><strong>Categoría 3:</strong> médicos, incluidas todas las especialidades.</li>
+          <li><strong>Categoría 4:</strong> demás profesionales de la salud.</li>
+        </ul>
+      </div>
+    </fieldset>
     <button id="enviar" type="submit">Guardar notificación</button><p id="estado" class="estado" role="status" aria-live="polite"></p>
   </form>
 </section></main><script src="config.js"></script><script src="script.js"></script></body>

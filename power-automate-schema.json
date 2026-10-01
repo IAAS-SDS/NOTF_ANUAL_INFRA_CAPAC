@@ -7,6 +7,8 @@
     "Fecha_Diligenciamiento": { "type": "string" },
     "Responsable_Diligenciamiento": { "type": "string" },
     "Correo": { "type": "string" },
+    "NivelComplejidad": { "type": "string", "enum": ["I", "II", "III", "IV"] },
+    "TipoPrestacion": { "type": "string", "enum": ["Ambulatoria", "Hospitalaria", "Ambas"] },
     "PuntosAtencion": { "type": "string" },
     "PuntosConElementos": { "type": "string" },
     "IndicadorInfraestructura": { "type": "string" },
@@ -32,7 +34,7 @@
   },
   "required": [
     "ID", "Cod_prestador", "Institucion", "Fecha_Diligenciamiento",
-    "Responsable_Diligenciamiento", "Correo", "PuntosAtencion",
+    "Responsable_Diligenciamiento", "Correo", "NivelComplejidad", "TipoPrestacion", "PuntosAtencion",
     "PuntosConElementos", "IndicadorInfraestructura",
     "TotalTrabajadores", "TotalCapacitados", "IndicadorCapacitacion"
   ]
