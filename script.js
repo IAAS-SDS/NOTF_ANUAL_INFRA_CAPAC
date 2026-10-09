@@ -2,13 +2,104 @@ const form = document.querySelector("#registro-form");
 const estado = document.querySelector("#estado");
 const boton = document.querySelector("#enviar");
 const categorias = document.querySelector("#categorias");
-document.querySelector('[name="Fecha_Diligenciamiento"]').value = new Date().toISOString().slice(0, 10);
+const popupEstado = document.querySelector("#popup-estado");
+const popupIcono = document.querySelector("#popup-icono");
+const popupTitulo = document.querySelector("#popup-titulo");
+const popupMensaje = document.querySelector("#popup-mensaje");
+const cerrarPopup = document.querySelector("#cerrar-popup");
+const campoCodigo = form.elements.Cod_prestador;
+const campoInstitucion = form.elements.Institucion;
+const campoSinCodigo = document.querySelector("#sin-codigo-prestador");
+const campoCorreo = form.elements.Correo;
+const campoConfirmarCorreo = form.elements.ConfirmarCorreo;
+const prestadores = Array.isArray(window.PRESTADORES) ? window.PRESTADORES : [];
+const listaCodigos = document.querySelector("#lista-codigos");
+const listaInstituciones = document.querySelector("#lista-instituciones");
+const fechaActualBogota = () => new Intl.DateTimeFormat("en-CA", {
+  timeZone: "America/Bogota",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit"
+}).format(new Date());
+document.querySelector('[name="Fecha_Diligenciamiento"]').value = fechaActualBogota();
+
+for (const prestador of prestadores) {
+  const opcionCodigo = document.createElement("option");
+  opcionCodigo.value = prestador.codigo;
+  opcionCodigo.label = prestador.institucion;
+  listaCodigos.append(opcionCodigo);
+
+  const opcionInstitucion = document.createElement("option");
+  opcionInstitucion.value = prestador.institucion;
+  opcionInstitucion.label = prestador.codigo;
+  listaInstituciones.append(opcionInstitucion);
+}
+
+function validarCodigoPrestador() {
+  if (campoSinCodigo.checked) {
+    campoCodigo.setCustomValidity("");
+    return;
+  }
+  campoCodigo.value = campoCodigo.value.replace(/\D/g, "").slice(0, 12);
+  if (campoCodigo.value && !campoCodigo.value.startsWith("11001")) {
+    campoCodigo.value = "11001";
+  }
+  campoCodigo.setCustomValidity(
+    campoCodigo.value && !/^(?:11001\d{7}|1100104035)$/.test(campoCodigo.value)
+      ? "El código del prestador debe tener 12 dígitos y comenzar por 11001, salvo códigos autorizados del catálogo."
+      : ""
+  );
+}
+
+campoCodigo.addEventListener("focus", () => {
+  if (!campoCodigo.value) campoCodigo.value = "11001";
+});
+
+campoSinCodigo.addEventListener("change", () => {
+  if (campoSinCodigo.checked) {
+    campoCodigo.value = "";
+    campoCodigo.required = false;
+    campoCodigo.disabled = true;
+    campoCodigo.setCustomValidity("");
+  } else {
+    campoCodigo.disabled = false;
+    campoCodigo.required = true;
+    campoCodigo.focus();
+    validarCodigoPrestador();
+  }
+});
+
+campoCodigo.addEventListener("input", () => {
+  validarCodigoPrestador();
+  const coincidencia = prestadores.find(item => item.codigo === campoCodigo.value);
+  if (coincidencia) campoInstitucion.value = coincidencia.institucion;
+});
+
+campoInstitucion.addEventListener("change", () => {
+  const nombre = campoInstitucion.value.trim().toLocaleLowerCase("es-CO");
+  const coincidencia = prestadores.find(item => item.institucion.trim().toLocaleLowerCase("es-CO") === nombre);
+  if (coincidencia && !campoSinCodigo.checked) {
+    campoCodigo.value = coincidencia.codigo;
+    validarCodigoPrestador();
+  }
+});
+
+function validarConfirmacionCorreo() {
+  campoConfirmarCorreo.setCustomValidity(
+    campoConfirmarCorreo.value && campoConfirmarCorreo.value.trim().toLocaleLowerCase() !== campoCorreo.value.trim().toLocaleLowerCase()
+      ? "Los correos electrónicos no coinciden."
+      : ""
+  );
+}
+
+campoCorreo.addEventListener("input", validarConfirmacionCorreo);
+campoConfirmarCorreo.addEventListener("input", validarConfirmacionCorreo);
 
 for (let numero = 1; numero <= 4; numero += 1) {
   categorias.insertAdjacentHTML("beforeend", `<tr>
     <th>Categoría ${numero}</th>
-    <td><input name="Cat${numero}Total" aria-label="Total categoría ${numero}" type="number" min="0" step="1" value="0" required></td>
-    <td><input name="Cat${numero}Capacitados" aria-label="Capacitados categoría ${numero}" type="number" min="0" step="1" value="0" required></td>
+    <td><input name="Cat${numero}Total" aria-label="Total categoría ${numero}" type="number" min="0" step="1" required></td>
+    <td><input name="Cat${numero}Capacitados" aria-label="Capacitados categoría ${numero}" type="number" min="0" step="1" required></td>
     <td><output id="cat${numero}Indicador">0,00 %</output></td></tr>`);
 }
 
@@ -47,12 +138,28 @@ function recalcular() {
 }
 
 function mostrarEstado(mensaje, tipo = "") { estado.textContent = mensaje; estado.className = `estado ${tipo}`; }
-form.addEventListener("input", recalcular);
+function mostrarPopup(tipo, titulo, mensaje) {
+  popupIcono.className = `popup-icono ${tipo}`;
+  popupTitulo.textContent = titulo;
+  popupMensaje.textContent = mensaje;
+  cerrarPopup.hidden = tipo !== "error";
+  popupEstado.hidden = false;
+}
+function ocultarPopup() { popupEstado.hidden = true; }
+cerrarPopup.addEventListener("click", ocultarPopup);
+form.addEventListener("input", event => {
+  if (event.target instanceof HTMLInputElement && event.target.type === "number") {
+    event.target.value = event.target.value.replace(/^0+(?=\d)/, "");
+  }
+  recalcular();
+});
 form.addEventListener("submit", async event => {
   event.preventDefault();
   const endpoint = window.APP_CONFIG?.powerAutomateUrl?.trim();
   if (!endpoint) return mostrarEstado("Falta configurar la URL de Power Automate en config.js.", "error");
   const datos = Object.fromEntries(new FormData(form).entries());
+  datos.Cod_prestador = campoSinCodigo.checked ? "111111111111" : campoCodigo.value;
+  delete datos.ConfirmarCorreo;
   const puntos = Number(datos.PuntosAtencion), conElementos = Number(datos.PuntosConElementos);
   if (conElementos > puntos) return mostrarEstado("Los puntos con elementos básicos no pueden superar los puntos de atención.", "error");
   datos.IndicadorInfraestructura = porcentaje(conElementos, puntos).toFixed(2);
@@ -65,11 +172,14 @@ form.addEventListener("submit", async event => {
   }
   Object.assign(datos, { TotalTrabajadores: String(totalTrabajadores), TotalCapacitados: String(totalCapacitados), IndicadorCapacitacion: porcentaje(totalCapacitados, totalTrabajadores).toFixed(2), ID: crypto.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(16).slice(2)}` });
   boton.disabled = true; mostrarEstado("Guardando…");
+  mostrarPopup("cargando", "Guardando información", "Por favor espere mientras procesamos el registro y generamos los archivos.");
   try {
     const respuesta = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json;charset=UTF-8" }, body: JSON.stringify(datos) });
     if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
-    form.reset(); form.elements.Fecha_Diligenciamiento.value = new Date().toISOString().slice(0, 10); recalcular(); mostrarEstado("Notificación guardada correctamente.", "ok");
-  } catch (error) { console.error(error); mostrarEstado("No fue posible guardar. Revise el flujo e intente de nuevo.", "error"); }
+    form.reset(); campoCodigo.disabled = false; campoCodigo.required = true; form.elements.Fecha_Diligenciamiento.value = fechaActualBogota(); recalcular(); mostrarEstado("Notificación guardada correctamente.", "ok");
+    mostrarPopup("ok", "Registro enviado", "La información fue guardada correctamente. Recibirá la confirmación en su correo electrónico.");
+    setTimeout(ocultarPopup, 2800);
+  } catch (error) { console.error(error); mostrarEstado("No fue posible guardar. Revise la conexión e intente de nuevo.", "error"); mostrarPopup("error", "No fue posible enviar", "Ocurrió un error al guardar la información. Cierre este mensaje e intente nuevamente."); }
   finally { boton.disabled = false; }
 });
 recalcular();
