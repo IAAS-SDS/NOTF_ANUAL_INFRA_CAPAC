@@ -3,25 +3,20 @@
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Notificación anual de higiene de manos">
-  <title>Notificación anual de higiene de manos</title><link rel="stylesheet" href="styles.css?v=20261008-2">
+  <title>Notificación anual de higiene de manos</title><link rel="stylesheet" href="styles.css?v=20261009-1">
 </head>
 <body><main class="container"><section class="card">
   <header><span class="eyebrow">Secretaría Distrital de Salud</span><h1>Notificación anual de higiene de manos</h1><p>Indicadores de infraestructura y capacitación.</p></header>
   <form id="registro-form">
     <fieldset><legend>Información general</legend><div class="grid">
       <label>Código del prestador
-        <input name="Cod_prestador" type="text" inputmode="numeric" minlength="10" maxlength="12" pattern="(11001[0-9]{7}|1100104035)" list="lista-codigos" aria-describedby="ayuda-codigo-prestador" autocomplete="off" required>
+        <input name="Cod_prestador" type="text" inputmode="numeric" minlength="12" maxlength="12" pattern="11001[0-9]{7}" list="lista-codigos" aria-describedby="ayuda-codigo-prestador" autocomplete="off" required>
         <span id="ayuda-codigo-prestador" class="campo-ayuda">Debe contener 12 dígitos y comenzar por 11001.</span>
       </label>
       <label>Institución
         <input name="Institucion" type="text" maxlength="180" list="lista-instituciones" autocomplete="off" required>
         <span class="campo-ayuda">Puede buscarla en el catálogo o escribirla manualmente si no aparece.</span>
       </label>
-      <div class="opcion-sin-codigo">
-        <input id="sin-codigo-prestador" type="checkbox">
-        <label for="sin-codigo-prestador">La institución no cuenta con código de prestador</label>
-        <p class="nota-sin-codigo"><strong>Importante:</strong> marque esta opción únicamente si su institución no tiene asignado un código de prestador.</p>
-      </div>
       <label>Fecha de diligenciamiento<input name="Fecha_Diligenciamiento" type="date" readonly required></label>
       <label>Responsable del diligenciamiento<input name="Responsable_Diligenciamiento" type="text" maxlength="180" required></label>
       <label>Correo electrónico<input name="Correo" type="email" maxlength="180" required></label>
@@ -85,5 +80,5 @@
       <button id="cerrar-popup" class="popup-cerrar" type="button" hidden>Cerrar</button>
     </div>
   </div>
-</section></main><script src="config.js"></script><script src="catalogo-prestadores.js"></script><script src="script.js?v=20261008-2"></script></body>
+</section></main><script src="config.js"></script><script src="catalogo-prestadores.js"></script><script src="script.js?v=20261009-2"></script></body>
 </html>

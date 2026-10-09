@@ -47,73 +47,6 @@ header p { margin: 0 0 32px; color: #55716b; }
   align-content: start;
 }
 
-.opcion-sin-codigo {
-  grid-column: 1 / -1;
-  position: relative;
-  margin: -4px 0 12px;
-  padding: 14px 16px;
-  border: 1px solid #c7ddd8;
-  border-radius: 12px;
-  background: #f4faf8;
-  transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
-}
-
-.opcion-sin-codigo input {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-}
-
-.opcion-sin-codigo label {
-  position: relative;
-  display: flex;
-  align-items: center;
-  min-height: 28px;
-  padding-left: 54px;
-  margin: 0;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.opcion-sin-codigo label::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  width: 42px;
-  height: 24px;
-  border-radius: 999px;
-  background: #9db5af;
-  transition: background .2s ease;
-}
-
-.opcion-sin-codigo label::after {
-  content: "";
-  position: absolute;
-  left: 3px;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 1px 4px rgba(22, 48, 43, .25);
-  transition: transform .2s ease;
-}
-
-.opcion-sin-codigo:has(input:checked) {
-  border-color: #087f69;
-  background: #e5f6f1;
-}
-
-.opcion-sin-codigo input:checked + label::before { background: #087f69; }
-.opcion-sin-codigo input:checked + label::after { transform: translateX(18px); }
-.opcion-sin-codigo input:focus-visible + label { outline: 3px solid rgba(8, 127, 105, .2); outline-offset: 4px; border-radius: 4px; }
-.nota-sin-codigo {
-  margin: 10px 0 0 54px;
-  color: #55716b;
-  font-size: .9rem;
-  line-height: 1.45;
-}
-.nota-sin-codigo strong { color: #294c45; }
 input:disabled { background: #edf2f1; color: #71827e; cursor: not-allowed; }
 
 label {
@@ -267,18 +200,9 @@ button:disabled { opacity: .65; cursor: wait; }
     font-size: 1.05rem;
   }
   .grid { grid-template-columns: 1fr; gap: 0; }
-  .opcion-sin-codigo {
-    margin: 0 0 20px;
-    padding: 14px 12px;
-  }
-  .opcion-sin-codigo label {
-    align-items: flex-start;
-    line-height: 1.35;
-  }
   .infraestructura .grid { gap: 18px; }
   .infraestructura label { grid-template-rows: auto 54px auto; }
   .infraestructura .indicador { margin-top: 16px; }
-  .nota-sin-codigo { margin-left: 0; }
   .tabla-responsive { overflow: visible; }
   table, tbody, tfoot, tr, th, td { display: block; }
   table { min-width: 0; }

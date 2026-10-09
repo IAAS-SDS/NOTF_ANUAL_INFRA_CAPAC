@@ -9,10 +9,11 @@ const popupMensaje = document.querySelector("#popup-mensaje");
 const cerrarPopup = document.querySelector("#cerrar-popup");
 const campoCodigo = form.elements.Cod_prestador;
 const campoInstitucion = form.elements.Institucion;
-const campoSinCodigo = document.querySelector("#sin-codigo-prestador");
 const campoCorreo = form.elements.Correo;
 const campoConfirmarCorreo = form.elements.ConfirmarCorreo;
-const prestadores = Array.isArray(window.PRESTADORES) ? window.PRESTADORES : [];
+const prestadores = Array.isArray(window.PRESTADORES)
+  ? window.PRESTADORES.filter(item => item.codigo !== "1100104035")
+  : [];
 const listaCodigos = document.querySelector("#lista-codigos");
 const listaInstituciones = document.querySelector("#lista-instituciones");
 const fechaActualBogota = () => new Intl.DateTimeFormat("en-CA", {
@@ -36,37 +37,19 @@ for (const prestador of prestadores) {
 }
 
 function validarCodigoPrestador() {
-  if (campoSinCodigo.checked) {
-    campoCodigo.setCustomValidity("");
-    return;
-  }
   campoCodigo.value = campoCodigo.value.replace(/\D/g, "").slice(0, 12);
   if (campoCodigo.value && !campoCodigo.value.startsWith("11001")) {
     campoCodigo.value = "11001";
   }
   campoCodigo.setCustomValidity(
-    campoCodigo.value && !/^(?:11001\d{7}|1100104035)$/.test(campoCodigo.value)
-      ? "El código del prestador debe tener 12 dígitos y comenzar por 11001, salvo códigos autorizados del catálogo."
+    campoCodigo.value && !/^11001\d{7}$/.test(campoCodigo.value)
+      ? "El código del prestador debe tener 12 dígitos y comenzar por 11001."
       : ""
   );
 }
 
 campoCodigo.addEventListener("focus", () => {
   if (!campoCodigo.value) campoCodigo.value = "11001";
-});
-
-campoSinCodigo.addEventListener("change", () => {
-  if (campoSinCodigo.checked) {
-    campoCodigo.value = "";
-    campoCodigo.required = false;
-    campoCodigo.disabled = true;
-    campoCodigo.setCustomValidity("");
-  } else {
-    campoCodigo.disabled = false;
-    campoCodigo.required = true;
-    campoCodigo.focus();
-    validarCodigoPrestador();
-  }
 });
 
 campoCodigo.addEventListener("input", () => {
@@ -78,7 +61,7 @@ campoCodigo.addEventListener("input", () => {
 campoInstitucion.addEventListener("change", () => {
   const nombre = campoInstitucion.value.trim().toLocaleLowerCase("es-CO");
   const coincidencia = prestadores.find(item => item.institucion.trim().toLocaleLowerCase("es-CO") === nombre);
-  if (coincidencia && !campoSinCodigo.checked) {
+  if (coincidencia) {
     campoCodigo.value = coincidencia.codigo;
     validarCodigoPrestador();
   }
@@ -158,7 +141,6 @@ form.addEventListener("submit", async event => {
   const endpoint = window.APP_CONFIG?.powerAutomateUrl?.trim();
   if (!endpoint) return mostrarEstado("Falta configurar la URL de Power Automate en config.js.", "error");
   const datos = Object.fromEntries(new FormData(form).entries());
-  datos.Cod_prestador = campoSinCodigo.checked ? "111111111111" : campoCodigo.value;
   delete datos.ConfirmarCorreo;
   const puntos = Number(datos.PuntosAtencion), conElementos = Number(datos.PuntosConElementos);
   if (conElementos > puntos) return mostrarEstado("Los puntos con elementos básicos no pueden superar los puntos de atención.", "error");
@@ -176,7 +158,7 @@ form.addEventListener("submit", async event => {
   try {
     const respuesta = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json;charset=UTF-8" }, body: JSON.stringify(datos) });
     if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
-    form.reset(); campoCodigo.disabled = false; campoCodigo.required = true; form.elements.Fecha_Diligenciamiento.value = fechaActualBogota(); recalcular(); mostrarEstado("Notificación guardada correctamente.", "ok");
+    form.reset(); form.elements.Fecha_Diligenciamiento.value = fechaActualBogota(); recalcular(); mostrarEstado("Notificación guardada correctamente.", "ok");
     mostrarPopup("ok", "Registro enviado", "La información fue guardada correctamente. Recibirá la confirmación en su correo electrónico.");
     setTimeout(ocultarPopup, 2800);
   } catch (error) { console.error(error); mostrarEstado("No fue posible guardar. Revise la conexión e intente de nuevo.", "error"); mostrarPopup("error", "No fue posible enviar", "Ocurrió un error al guardar la información. Cierre este mensaje e intente nuevamente."); }
