@@ -98,9 +98,9 @@ campoConfirmarCorreo.addEventListener("input", validarConfirmacionCorreo);
 for (let numero = 1; numero <= 4; numero += 1) {
   categorias.insertAdjacentHTML("beforeend", `<tr>
     <th>Categoría ${numero}</th>
-    <td><input name="Cat${numero}Total" aria-label="Total categoría ${numero}" type="number" min="0" step="1" required></td>
-    <td><input name="Cat${numero}Capacitados" aria-label="Capacitados categoría ${numero}" type="number" min="0" step="1" required></td>
-    <td><output id="cat${numero}Indicador">0,00 %</output></td></tr>`);
+    <td data-label="Total de trabajadores"><input name="Cat${numero}Total" aria-label="Total categoría ${numero}" type="number" min="0" step="1" required></td>
+    <td data-label="Trabajadores capacitados"><input name="Cat${numero}Capacitados" aria-label="Capacitados categoría ${numero}" type="number" min="0" step="1" required></td>
+    <td data-label="Indicador"><output id="cat${numero}Indicador">0,00 %</output></td></tr>`);
 }
 
 const porcentaje = (parte, total) => total > 0 ? (parte / total) * 100 : 0;
@@ -172,7 +172,7 @@ form.addEventListener("submit", async event => {
   }
   Object.assign(datos, { TotalTrabajadores: String(totalTrabajadores), TotalCapacitados: String(totalCapacitados), IndicadorCapacitacion: porcentaje(totalCapacitados, totalTrabajadores).toFixed(2), ID: crypto.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(16).slice(2)}` });
   boton.disabled = true; mostrarEstado("Guardando…");
-  mostrarPopup("cargando", "Guardando información", "Por favor espere mientras procesamos el registro y generamos los archivos.");
+  mostrarPopup("cargando", "Guardando información", "Por favor espere mientras procesamos el registro.");
   try {
     const respuesta = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json;charset=UTF-8" }, body: JSON.stringify(datos) });
     if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
